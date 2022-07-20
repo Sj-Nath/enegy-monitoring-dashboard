@@ -10,9 +10,7 @@ import datetime
 
 dash.register_page(__name__)
 
-path = 'C:\\Users\\USER\Desktop\\Python Practice\\Dash app\\Wooshin dashboard\\data\\'
-
-df = pd.read_csv(path + 'Air_con.csv')
+df = pd.read_csv('..\\data\\Air_con.csv')
 df['Date_Time'] = pd.to_datetime(df['Date_Time'])
 df.sort_values('Date_Time', ascending=False, inplace=True)
 
