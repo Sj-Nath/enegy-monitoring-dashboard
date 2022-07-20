@@ -14,9 +14,7 @@ dash.register_page(__name__)
 
 
 def get_em():
-    path = 'C:\\Users\\USER\Desktop\\Python Practice\\Dash app\\Wooshin dashboard\\data\\'
-
-    data = pd.read_excel(path + 'EM.xlsx')
+    data = pd.read_excel('..\\data\\EM.xlsx')
     data.sort_values(['DATE_TIME'], ascending=True)
     data['Year'] = data['DATE_TIME'].dt.year
     data['Month'] = data['DATE_TIME'].dt.month
