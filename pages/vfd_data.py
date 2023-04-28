@@ -11,7 +11,7 @@ import datetime
 
 dash.register_page(__name__)
 
-df = pd.read_csv('..\\data\\vfd.csv')
+df = pd.read_csv('.\\data\\vfd.csv')
 df['Date_Time'] = pd.to_datetime(df['Date_Time'])
 df = df.sort_values('Date_Time').reset_index(drop=True)
 df['Node_Name'] = df['Node_Name'].str.strip()

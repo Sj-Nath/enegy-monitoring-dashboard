@@ -10,7 +10,7 @@ import datetime
 
 dash.register_page(__name__)
 
-df = pd.read_csv('..\\data\\Air_con.csv')
+df = pd.read_csv('.\\data\\Air_con.csv')
 df['Date_Time'] = pd.to_datetime(df['Date_Time'])
 df.sort_values('Date_Time', ascending=False, inplace=True)
 
