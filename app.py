@@ -4,7 +4,7 @@ import dash
 app = Dash(__name__, use_pages=True, prevent_initial_callbacks=True)
 
 app.layout = html.Div([
-    html.H1('WOOSHIN LINE DASHBOARD FOR VARIOUS PARAMETERS MONITERING',
+    html.H1('PLANT DASHBOARD FOR VARIOUS PARAMETERS MONITERING',
             style={'textAlign': 'center', 'color': 'blue'}),
     html.P('Click any of the link to visit the page'),
     html.Div(

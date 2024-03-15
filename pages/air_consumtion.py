@@ -7,10 +7,13 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import datetime
-
+import os
 dash.register_page(__name__)
 
-df = pd.read_csv('.\\data\\Air_con.csv')
+path  = os.getcwd()
+file = 'vfd.csv'
+df = pd.read_csv(os.path.join(path,'data','Air_con.csv'))
+
 df['Date_Time'] = pd.to_datetime(df['Date_Time'])
 df.sort_values('Date_Time', ascending=False, inplace=True)
 
@@ -38,10 +41,9 @@ fig4 = go.Figure(data=[go.Table(header=dict(values=['Date_Time', 'Flow_Rate', 'C
                                 cells=dict(values=[df.head(10).Date_Time, df.head(10).Flow_Rate,
                                                    df.head(10).Consumption]))
                        ])
-fig4.layout.template = 'plotly_dark'
 
 layout = html.Div(children=[
-    html.H1('Wooshin Line Airflow Data',
+    html.H1('Plant Airflow Data',
             style={'textAlign': 'center', 'color': 'blue'}),
     html.Label('Please select date range here: ', style={'color': 'white'}),
     dcc.DatePickerRange(
@@ -88,11 +90,11 @@ def year_wise(start_date, end_date):
     df_copy = df.copy()
     df_copy = df_copy[(df_copy['Date_Time'] >= start_date) & (df_copy['Date_Time'] <= end_date)]
 
-    fig1 = px.line(data_frame=df_copy, x='Date_Time', y='Flow_Rate', text='Flow_Rate', template='plotly_dark')
+    fig1 = px.line(data_frame=df_copy, x='Date_Time', y='Flow_Rate', text='Flow_Rate',)
     fig1.update_traces(textposition='bottom right')
     fig1.update_layout({'title': 'Flow Rate W.R.T Time'})
-    fig2 = px.pie(data_frame=df_copy, names='Shift', values='Consumption', template='plotly_dark')
+    fig2 = px.pie(data_frame=df_copy, names='Shift', values='Consumption')
     fig2.update_layout({'title': 'Shift-wise % consumption'})
-    fig3 = px.bar(data_frame=df_copy, x='Date_Time', y='Consumption', text='Consumption', template='plotly_dark')
+    fig3 = px.bar(data_frame=df_copy, x='Date_Time', y='Consumption', text='Consumption',)
     fig3.update_layout({'title': 'Air Consumption W.R.T. Time'})
     return fig1, fig2, fig3

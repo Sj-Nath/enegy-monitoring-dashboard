@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -11,7 +12,10 @@ import datetime
 
 dash.register_page(__name__)
 
-df = pd.read_csv('.\\data\\vfd.csv')
+path  = os.getcwd()
+file = 'vfd.csv'
+df = pd.read_csv(os.path.join(path,'data','vfd.csv'))
+
 df['Date_Time'] = pd.to_datetime(df['Date_Time'])
 df = df.sort_values('Date_Time').reset_index(drop=True)
 df['Node_Name'] = df['Node_Name'].str.strip()
@@ -46,7 +50,7 @@ voltage = go.Figure(data=[V_i, V_o, V_d], layout=V_t)
 consumption = px.histogram(data_frame=df, x='Date_Time', y='Last_consumption', color='Node_Name', barmode='group')
 
 layout = html.Div(children=[
-    html.H1('Wooshin Line VFD Data',
+    html.H1('Plant VFD Data',
             style={'textAlign': 'center', 'color': 'blue'}),
     html.Br(),
     html.H3('Current VFD parameters', style={'textAlign': 'center', 'color': 'blue'}),

@@ -9,12 +9,13 @@ from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import dash_daq as daq
 import datetime
-
+import os
 dash.register_page(__name__)
 
 
 def get_em():
-    data = pd.read_excel('.\\data\\EM.xlsx')
+    path  = os.getcwd()
+    data = pd.read_excel(os.path.join(path,'data','EM.xlsx'))
     data.sort_values(['DATE_TIME'], ascending=True)
     data['Year'] = data['DATE_TIME'].dt.year
     data['Month'] = data['DATE_TIME'].dt.month
@@ -74,12 +75,10 @@ current_thd_list = [i for i in df.columns if 'THD_Current' in i]
 
 pd.options.plotting.backend = "plotly"
 em_P3 = df.plot(kind='scatter', x=df['DATE_TIME'], y=voltage_thd_list)
-em_P3.layout.template = 'plotly_dark'
 em_P4 = df.plot(kind='scatter', x=df['DATE_TIME'], y=current_thd_list)
-em_P4.layout.template = 'plotly_dark'
 
 layout = html.Div(children=[
-    html.H1('Wooshin Line Energy Monitoring',
+    html.H1('Plant Energy Monitoring',
             style={'textAlign': 'center', 'color': 'blue'}),
     html.Br(),
     html.H3("Current Energy parameters' parameters", style={'textAlign': 'center', 'color': 'blue'}),
@@ -99,7 +98,7 @@ layout = html.Div(children=[
         n_intervals=0),
     html.Div([dbc.Card(
         dbc.CardBody(
-            html.H3(f"{i.replace('_', ' ')} = {df[i][0]}", className="card-title", id="card_num1"))
+            html.H3(f"{i.replace('_', ' ')} = {df[i][1]}", className="card-title", id="card_num1"))
     ) for i in card]),
     html.Div([
         daq.Gauge(
@@ -195,7 +194,7 @@ def em_callbacks(start_date, end_date):
             'Last_consumption': '<b>Power Consumed in KW<b>'})
     em_P1.update_layout(
         title='<b>Area-wise Energy consumption<b>',
-        title_x=0.5, template='plotly_dark')
+        title_x=0.5, )
 
     em_P2 = px.histogram(
         data_frame=df_copy,
@@ -205,7 +204,7 @@ def em_callbacks(start_date, end_date):
         barmode='relative',
         labels={
             'Node_Name': '<b>Area<b>',
-            'Last_consumption': '<b>Power Consumed in KW<b>'}, template='plotly_dark')
+            'Last_consumption': '<b>Power Consumed in KW<b>'},)
 
     em_P2.update_layout(
         title='<b>Hourly Energy consumption<b>',
@@ -232,7 +231,5 @@ def thd_callbacks(start_date, end_date, thd):
 
     pd.options.plotting.backend = "plotly"
     em_P3 = df_copy.plot(kind='scatter', x=df_copy['DATE_TIME'], y=voltage_thd_list)
-    em_P3.layout.template = 'plotly_dark'
     em_P4 = df_copy.plot(kind='scatter', x=df_copy['DATE_TIME'], y=current_thd_list)
-    em_P4.layout.template = 'plotly_dark'
     return em_P3, em_P4
